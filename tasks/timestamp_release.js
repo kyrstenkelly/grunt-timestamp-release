@@ -22,27 +22,25 @@ module.exports = function(grunt) {
     var options = this.options({
       files: ['package.json'],
       commit: true,
-      commitMessage: 'Release <%= timestamp %>',
       tag: true,
       tagFormat: 'YYYY-MM-DD--hh-mm',
-      tagMessage: 'Release <%= timestamp %>',
       push: true,
       pushTo: 'upstream'
     });
+
+    var done = this.async();
 
     var VERSION_REGEXP = /([\'|\"]?version[\'|\"]?[ ]*:[ ]*[\'|\"]?)([\d||A-a|.|-]*)([\'|\"]?)/i,
       now = moment(),
       timestampVersion = moment(now).format(options.tagFormat),
       fileNames = '';
 
-    var defaultCommitMsg = 'Release <%= timestamp %>',
-      defaultTagMsg = 'Release <%= timestamp %>',
+    var commitMessage = options.commitMessage || 'Release <%= timestamp %>',
+      tagMessage = options.tagMessage || 'Release <%= timestamp %>',
       templateOpts = {data: {timestamp: timestampVersion}};
 
-    options.commitMessage = grunt.template.process(options.commitMessage || defaultCommitMsg,
-      templateOpts);
-    options.tagMessage = grunt.template.process(options.tagMessage || defaultTagMsg,
-      templateOpts);
+    options.commitMessage = grunt.template.process(commitMessage, templateOpts);
+    options.tagMessage = grunt.template.process(tagMessage, templateOpts);
 
     options.files.forEach(function(fileName) {
       fileNames = fileNames + fileName + ' ';
@@ -50,7 +48,7 @@ module.exports = function(grunt) {
 
     function ifSet(option, fn) {
       if (options[option]) {
-        return fn();
+        return fn;
       }
     }
 
@@ -93,7 +91,8 @@ module.exports = function(grunt) {
     }
 
     function tag() {
-
+      return run('git tag -s ' + timestampVersion + ' -m ' + options.tagMessage,
+        'Tagging ' + timestampVersion);
     }
 
     function push() {
@@ -104,7 +103,11 @@ module.exports = function(grunt) {
       .then(ifSet('commit', add))
       .then(ifSet('commit', commit))
       .then(ifSet('tag', tag))
-      .then(ifSet('push', push));
+      .then(ifSet('push', push))
+      .catch(function(message) {
+        grunt.fail.warn(message || 'Timestamp release failed');
+      })
+      .finally(done);
 
   });
 

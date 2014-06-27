@@ -31,7 +31,6 @@ module.exports = function(grunt) {
     // Configuration to be run (and then tested).
     timestamp_release: {
       options: {
-        files: ['bower.json', 'package.json']
       },
       default_options: {
         options: {}
