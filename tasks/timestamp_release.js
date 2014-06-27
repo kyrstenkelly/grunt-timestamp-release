@@ -17,7 +17,7 @@ module.exports = function(grunt) {
     shell = require('shelljs'),
     q = require('q');
 
-  grunt.registerTask('timestamp_release', 'Release a timestamped version.', function() {
+  grunt.registerTask('timestampRelease', 'Release a timestamped version.', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
       files: ['package.json'],
