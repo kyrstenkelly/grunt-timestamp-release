@@ -31,19 +31,18 @@ module.exports = function(grunt) {
     // Configuration to be run (and then tested).
     timestamp_release: {
       default_options: {
-        options: {
-        },
-        files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123']
-        }
+        options: {}
       },
       custom_options: {
         options: {
-          separator: ': ',
-          punctuation: ' !!!'
-        },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123']
+          files: ['package.json'],
+          commit: true,
+          commitMessage: 'Release <%= timestamp %>',
+          tag: true,
+          tagFormat: 'YYYY-MM-DD--hh-mm',
+          tagMessage: 'Release <%= timestamp %>',
+          push: true,
+          pushTo: 'upstream'
         }
       }
     },

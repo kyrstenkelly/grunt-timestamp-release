@@ -31,7 +31,7 @@ grunt.initConfig({
       commitMessage: 'Release <%= timestamp %>',
       tag: true,
       tagFormat: 'YYYY-MM-DD--hh-mm',
-      tagMessage: 'Release <%= timestamp %>'
+      tagMessage: 'Release <%= timestamp %>',
       push: true,
       pushTo: 'upstream'
     }

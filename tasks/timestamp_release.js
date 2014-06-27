@@ -13,38 +13,43 @@ module.exports = function(grunt) {
   // Please see the Grunt documentation for more information regarding task
   // creation: http://gruntjs.com/creating-tasks
 
-  grunt.registerMultiTask('timestamp_release', 'Release a timestamped version.', function() {
+  var moment = require('moment'),
+    q = require('q');
+
+  grunt.registerTask('timestamp_release', 'Release a timestamped version.', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      punctuation: '.',
-      separator: ', '
+      files: ['package.json'],
+      commit: true,
+      commitMessage: 'Release <%= timestamp %>',
+      tag: true,
+      tagFormat: 'YYYY-MM-DD--hh-mm',
+      tagMessage: 'Release <%= timestamp %>',
+      push: true,
+      pushTo: 'upstream'
     });
 
-    // Iterate over all specified file groups.
-    this.files.forEach(function(f) {
-      // Concat specified files.
-      var src = f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
-        if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
-        }
-      }).map(function(filepath) {
-        // Read file source.
-        return grunt.file.read(filepath);
-      }).join(grunt.util.normalizelf(options.separator));
+    var VERSION_REGEXP = /([\'|\"]?version[\'|\"]?[ ]*:[ ]*[\'|\"]?)([\d||A-a|.|-]*)([\'|\"]?)/i,
+      now = moment(),
+      timestampVersion = moment(now).format(options.tagFormat);
 
-      // Handle options.
-      src += options.punctuation;
+    console.log(timestampVersion);
+/*
+    q().then(timestamp)
+      .then(ifSet(commit))
+      .then(ifSet(tag))
+      .then(ifSet(push))
 
-      // Write the destination file.
-      grunt.file.write(f.dest, src);
-
-      // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
-    });
+    function timestamp() {
+      return Q.fcall(function() {
+        grunt.file.expand(options.files).forEach(function(file) {
+          var content = grunt.file.read(file).replace(VERSION_REGEXP, function(version, pre, version, post) {
+            return pre + timestamp + post;
+          });
+        });
+      });
+    }
+*/
   });
 
 };
