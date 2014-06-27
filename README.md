@@ -20,11 +20,11 @@ grunt.loadNpmTasks('grunt-timestamp-release');
 ## The "timestamp_release" task
 
 ### Overview
-In your project's Gruntfile, add a section named `timestamp_release` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `timestampRelease` to the data object passed into `grunt.initConfig()`.
 
 ```js
 grunt.initConfig({
-  timestamp_release: {
+  timestampRelease: {
     options: {
       files: ['package.json'],
       commit: true,
