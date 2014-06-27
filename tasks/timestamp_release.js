@@ -77,6 +77,9 @@ module.exports = function(grunt) {
           var content = grunt.file.read(file).replace(VERSION_REGEXP, function(match, pre, version, post) {
             return pre + timestampVersion + post;
           });
+
+          grunt.file.write(file, content);
+          grunt.log.ok('Updating version in ' + file);
         });
       });
     }
