@@ -31,6 +31,7 @@ module.exports = function(grunt) {
     // Configuration to be run (and then tested).
     timestamp_release: {
       options: {
+        pushTo: 'origin'
       },
       default_options: {
         options: {}

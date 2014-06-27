@@ -91,12 +91,16 @@ module.exports = function(grunt) {
     }
 
     function tag() {
-      return run('git tag -s ' + timestampVersion + ' -m ' + options.tagMessage,
+      return run('git tag -s ' + timestampVersion + ' -m "' + options.tagMessage + '"',
         'Tagging ' + timestampVersion);
     }
 
     function push() {
+      return run('git push ' + options.pushTo);
+    }
 
+    function pushTags() {
+      return run('git push ' + options.pushTo + ' --tags');
     }
 
     q().then(timestamp)
@@ -104,6 +108,7 @@ module.exports = function(grunt) {
       .then(ifSet('commit', commit))
       .then(ifSet('tag', tag))
       .then(ifSet('push', push))
+      .then(ifSet('push', pushTags))
       .catch(function(message) {
         grunt.fail.warn(message || 'Timestamp release failed');
       })
