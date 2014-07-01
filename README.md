@@ -32,10 +32,12 @@ grunt.initConfig({
       tag: true,
       tagFormat: 'YYYY-MM-DD--hh-mm',
       tagMessage: 'Release <%= timestamp %>',
+      name: '',
+      email: '',
       push: true,
       pushTo: 'upstream'
     }
-  },
+  }
 });
 ```
 
@@ -74,9 +76,25 @@ formats](http://momentjs.com/docs/#/parsing/string-format/).
 
 #### options.tagMessage  
 Type: `String`
-Default value: `"Release <%= timestamp"`  
+Default value: `"Release <%= timestamp %>`  
 
-If `options.tag`, what do you want the tag message to be? `<%= timestamp %>` is available for reference.
+If `options.tag`, what do you want the tag message to be? `<%= timestamp %>`, `<%= name %>`
+and `<%= email %>` are available for reference. `name` and `email` can be set in the options,
+or through the command line.
+
+#### options.name
+Type: `String`
+Default value: Nothing  
+
+Set this option if you want to use `name` in the tagMessage without specifying it via the command
+line.
+
+#### options.email
+Type: `String`
+Default value: Nothing
+
+Set this option if you want to use `email` in the tagMessage without specifying it via the command
+line.
 
 #### options.push
 Type: `Boolean`
@@ -91,6 +109,13 @@ Default value: `'upstream'`
 If `options.push`, which repo do you want to push to?
 
 ### Usage Examples
+
+```
+grunt release
+
+
+grunt release --name "Kyrsten Kelly" --email "kyrsten.kelly@example.com"
+```
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).

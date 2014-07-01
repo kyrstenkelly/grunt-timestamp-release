@@ -28,6 +28,9 @@ module.exports = function(grunt) {
       pushTo: 'upstream'
     });
 
+    options.name = grunt.option('name') || grunt.config.get('name') || null;
+    options.email = grunt.option('email') || grunt.config.get('email') || null;
+
     var done = this.async();
 
     var VERSION_REGEXP = /([\'|\"]?version[\'|\"]?[ ]*:[ ]*[\'|\"]?)([\d||A-a|.|-]*)([\'|\"]?)/i,
@@ -35,12 +38,22 @@ module.exports = function(grunt) {
       timestampVersion = moment(now).format(options.tagFormat),
       fileNames = '';
 
-    var commitMessage = options.commitMessage || 'Release <%= timestamp %>',
-      tagMessage = options.tagMessage || 'Release <%= timestamp %>',
-      templateOpts = {data: {timestamp: timestampVersion}};
+    var commitMessage = grunt.config.getRaw('timestampRelease.options.commitMessage') || 'Release <%= timestamp %>',
+      tagMessage = grunt.config.getRaw('timestampRelease.options.tagMessage') || 'Release <%= timestamp %>',
+      templateOpts = {data: {timestamp: timestampVersion, name: options.name,
+        email: options.email}};
 
-    options.commitMessage = grunt.template.process(commitMessage, templateOpts);
-    options.tagMessage = grunt.template.process(tagMessage, templateOpts);
+    try {
+      options.commitMessage = grunt.template.process(commitMessage, templateOpts);
+    } catch (e) {
+      grunt.fail.warn('There was an error processing your commit message.');
+    }
+
+    try {
+      options.tagMessage = grunt.template.process(tagMessage, templateOpts);
+    } catch (e) {
+      grunt.fail.warn('There was an error processing your tag message.');
+    }
 
     options.files.forEach(function(fileName) {
       fileNames = fileNames + fileName + ' ';

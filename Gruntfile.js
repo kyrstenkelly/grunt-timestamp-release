@@ -31,6 +31,7 @@ module.exports = function(grunt) {
     // Configuration to be run (and then tested).
     timestampRelease: {
       options: {
+        tagMessage: 'Released by: <%= name %> <<%= email %>>',
         pushTo: 'origin'
       },
       default_options: {
