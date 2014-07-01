@@ -27,14 +27,15 @@ module.exports = function(grunt) {
         push: true,
         pushTo: 'upstream'
       }),
-      VERSION_REGEXP = /([\'|\"]?version[\'|\"]?[ ]*:[ ]*[\'|\"]?)([\d||A-a|.|-]*)([\'|\"]?)/i,
-      timestampVersion = grunt.option('timestamp') || moment().format(options.tagFormat),
-      testRun = grunt.option('test-run'),
       done = this.async(),
+      VERSION_REGEXP = /([\'|\"]?version[\'|\"]?[ ]*:[ ]*[\'|\"]?)([\d||A-a|.|-]*)([\'|\"]?)/i,
+      testRun = grunt.option('test-run'),
+      time = grunt.option('timestamp'),
       fileNames = '',
       commitMessage,
       tagMessage,
-      templateOpts;
+      templateOpts,
+      timestampVersion;
 
     options.name = grunt.option('name') || grunt.config.get('name') || null;
     options.email = grunt.option('email') || grunt.config.get('email') || null;
@@ -56,6 +57,14 @@ module.exports = function(grunt) {
       options.tagMessage = grunt.template.process(tagMessage, templateOpts);
     } catch (e) {
       grunt.fail.warn('There was an error processing your tag message.');
+    }
+
+    // If user-specified timestamp is valid, use that.
+    // Else, use the current time as the timestampVersion.
+    if (time && moment(time).isValid()) {
+      timestampVersion = moment(time).format(options.tagFormat);
+    } else {
+      timestampVersion = moment().format(options.tagFormat);
     }
 
     options.files.forEach(function(fileName) {
