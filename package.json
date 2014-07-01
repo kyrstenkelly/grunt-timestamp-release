@@ -1,7 +1,7 @@
 {
   "name": "grunt-timestamp-release",
   "description": "Release a timestamped version.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/kyrstenkelly/grunt-timestamp-release",
   "author": {
     "name": "Kyrsten",
