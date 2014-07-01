@@ -20,27 +20,30 @@ module.exports = function(grunt) {
   grunt.registerTask('timestampRelease', 'Release a timestamped version.', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      files: ['package.json'],
-      commit: true,
-      tag: true,
-      tagFormat: 'YYYY-MM-DD--hh-mm',
-      push: true,
-      pushTo: 'upstream'
-    });
+        files: ['package.json'],
+        commit: true,
+        tag: true,
+        tagFormat: 'YYYY-MM-DD--hh-mm',
+        push: true,
+        pushTo: 'upstream'
+      }),
+      VERSION_REGEXP = /([\'|\"]?version[\'|\"]?[ ]*:[ ]*[\'|\"]?)([\d||A-a|.|-]*)([\'|\"]?)/i,
+      timestampVersion = moment().format(options.tagFormat),
+      testRun = grunt.option('test-run'),
+      done = this.async(),
+      fileNames = '',
+      commitMessage,
+      tagMessage,
+      templateOpts;
 
     options.name = grunt.option('name') || grunt.config.get('name') || null;
     options.email = grunt.option('email') || grunt.config.get('email') || null;
 
-    var done = this.async();
-
-    var VERSION_REGEXP = /([\'|\"]?version[\'|\"]?[ ]*:[ ]*[\'|\"]?)([\d||A-a|.|-]*)([\'|\"]?)/i,
-      now = moment(),
-      timestampVersion = moment(now).format(options.tagFormat),
-      fileNames = '';
-
-    var commitMessage = grunt.config.getRaw('timestampRelease.options.commitMessage') || 'Release <%= timestamp %>',
-      tagMessage = grunt.config.getRaw('timestampRelease.options.tagMessage') || 'Release <%= timestamp %>',
-      templateOpts = {data: {timestamp: timestampVersion, name: options.name,
+    commitMessage = grunt.config.getRaw('timestampRelease.options.commitMessage') ||
+      'Release <%= timestamp %>';
+    tagMessage = grunt.config.getRaw('timestampRelease.options.tagMessage') ||
+      'Release <%= timestamp %>';
+    templateOpts = {data: {timestamp: timestampVersion, name: options.name,
         email: options.email}};
 
     try {
@@ -70,7 +73,11 @@ module.exports = function(grunt) {
         success;
       grunt.verbose.writeln('Running: ' + command);
 
-      success = shell.exec(command, {silent: true });
+      if (testRun) {
+        success = true;
+      } else {
+        success = shell.exec(command, {silent: true});
+      }
 
       if (success) {
         grunt.log.ok(message || command);

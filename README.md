@@ -111,11 +111,16 @@ If `options.push`, which repo do you want to push to?
 ### Usage Examples
 
 ```
-grunt release
+grunt timestampRelease
 
 
-grunt release --name "Kyrsten Kelly" --email "kyrsten.kelly@example.com"
+grunt timestampRelease --name "Kyrsten Kelly" --email "kyrsten.kelly@example.com"
 ```
+
+### Testing Release
+
+To test the release process without committing, tagging or pushing, use the `--test-run` option.
+`grunt timestampRelease --test-run`
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
