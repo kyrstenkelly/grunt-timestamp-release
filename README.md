@@ -108,19 +108,26 @@ Default value: `'upstream'`
 
 If `options.push`, which repo do you want to push to?
 
-### Usage Examples
+### Command Line Options
+#### --name  
+Specify a name to be used in the template for `commitMessage` or `tagMessage`.  
+`grunt timestampRelease --name "Kyrsten Kelly"`  
 
-```
-grunt timestampRelease
+
+#### --email
+Specify an email to be used in the template for `commitMessage` or `tagMessage`.  
+`grunt timestampRelease --email "kyrsten@example.com"`  
 
 
-grunt timestampRelease --name "Kyrsten Kelly" --email "kyrsten.kelly@example.com"
-```
+#### --timestamp
+Override the timestamp with a custom timestamp.  
+`grunt timestampRelease --timestamp "2014-04-05"`  
 
-### Testing Release
 
-To test the release process without committing, tagging or pushing, use the `--test-run` option.
-`grunt timestampRelease --test-run`
+#### --test-run
+Test the release process without committing, tagging, or pushing.  
+`grunt timestampRelease --test-run`  
+
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
