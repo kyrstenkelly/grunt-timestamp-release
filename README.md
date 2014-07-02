@@ -31,6 +31,8 @@ grunt.initConfig({
       commitMessage: 'Release <%= timestamp %>',
       tag: true,
       tagFormat: 'YYYY-MM-DD--hh-mm',
+      tagPrefix: '',
+      tagSuffix: '',
       tagMessage: 'Release <%= timestamp %>',
       name: '',
       email: '',
@@ -73,6 +75,38 @@ Default value: `'YYYY-MM-DD--hh-mm'`
 
 If `options.tag`, what do you want the timestamp format to be? Refer to [MomentJs
 formats](http://momentjs.com/docs/#/parsing/string-format/).
+
+### options.tagPrefix
+Type: `String`
+Default value: `""`  
+
+A string with which to prefix the tag. Example:  
+```
+  timestampRelease: {
+    options: {
+      tagPrefix: 'beta-'
+      tagFormat: 'MM-DD-YYYY'
+    }
+  }
+
+  // will tag "beta-07-02-2014"
+```  
+
+### options.tagSuffix
+Type: `String`
+Default value: `""`  
+
+A string to add to the end of the tag. Example:  
+```
+  timestampRelease: {
+    options: {
+      tagSuffix: '-beta'
+      tagFormat: 'MM-DD-YYYY'
+    }
+  }
+
+  // will tag "07-02-2014-beta"
+```  
 
 #### options.tagMessage  
 Type: `String`
@@ -117,6 +151,14 @@ Specify a name to be used in the template for `commitMessage` or `tagMessage`.
 #### --email
 Specify an email to be used in the template for `commitMessage` or `tagMessage`.  
 `grunt timestampRelease --email "kyrsten@example.com"`  
+
+
+#### --tagPrefix  
+Specify a string to add to the beginning of the tag.  
+
+
+#### --tagSuffix  
+Specify a string to add to the end of the tag.  
 
 
 #### --timestamp

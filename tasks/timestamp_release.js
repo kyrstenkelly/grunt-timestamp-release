@@ -23,6 +23,8 @@ module.exports = function(grunt) {
         files: ['package.json'],
         commit: true,
         tag: true,
+        tagPrefix: '',
+        tagSuffix: '',
         tagFormat: 'YYYY-MM-DD--hh-mm',
         push: true,
         pushTo: 'upstream'
@@ -35,8 +37,12 @@ module.exports = function(grunt) {
       commitMessage,
       tagMessage,
       templateOpts,
+      prefix,
+      suffix,
       timestampVersion;
 
+    prefix = grunt.option('tagPrefix') || options.tagPrefix || '';
+    suffix = grunt.option('tagSuffix') || options.tagSuffix || '';
     options.name = grunt.option('name') || grunt.config.get('name') || null;
     options.email = grunt.option('email') || grunt.config.get('email') || null;
 
@@ -120,8 +126,8 @@ module.exports = function(grunt) {
     }
 
     function tag() {
-      return run('git tag -s ' + timestampVersion + ' -m "' + options.tagMessage + '"',
-        'Tagging ' + timestampVersion);
+      return run('git tag -s ' + prefix + timestampVersion + suffix + ' -m "'
+        + options.tagMessage + '"', 'Tagging ' + prefix + timestampVersion + suffix);
     }
 
     function push() {
