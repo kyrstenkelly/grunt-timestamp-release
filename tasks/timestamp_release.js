@@ -30,7 +30,7 @@ module.exports = function(grunt) {
         pushTo: 'upstream'
       }),
       VERSION_REGEXP = /([\'|\"]?version[\'|\"]?[ ]*:[ ]*[\'|\"]?)([\d||A-a|.|-]*)([\'|\"]?)/i,
-      timestampVersion = grunt.option('timestamp') || moment().format(options.tagFormat),
+      timestampVersion = grunt.option('timestamp') || moment(new Date()).format(options.tagFormat),
       testRun = grunt.option('test-run'),
       done = this.async(),
       fileNames = '',
