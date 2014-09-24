@@ -27,7 +27,7 @@ module.exports = function(grunt) {
         tagSuffix: '',
         tagFormat: 'YYYY-MM-DD--hh-mm',
         push: true,
-        pushTo: 'upstream'
+        pushTo: 'origin'
       }),
       VERSION_REGEXP = /([\'|\"]?version[\'|\"]?[ ]*:[ ]*[\'|\"]?)([\d||A-a|.|-]*)([\'|\"]?)/i,
       timestampVersion = grunt.option('timestamp') || moment(new Date()).format(options.tagFormat),
