@@ -31,7 +31,7 @@ module.exports = function(grunt) {
       }),
       VERSION_REGEXP = /([\'|\"]?version[\'|\"]?[ ]*:[ ]*[\'|\"]?)([\d||A-a|.|-]*)([\'|\"]?)/i,
       timestampVersion = grunt.option('timestamp') || moment(new Date()).format(options.tagFormat),
-      testRun = grunt.option('test-run'),
+      testRun = grunt.option('test-run') || false,
       done = this.async(),
       fileNames = '',
       commitMessage,
@@ -127,6 +127,10 @@ module.exports = function(grunt) {
 
     function pushTags() {
       return run('git push ' + options.pushTo + ' --tags');
+    }
+
+    if (testRun) {
+      grunt.log.ok('Running as a test run!');
     }
 
     q().then(timestamp)
