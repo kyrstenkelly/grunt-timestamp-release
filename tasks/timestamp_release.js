@@ -122,7 +122,8 @@ module.exports = function(grunt) {
     }
 
     function push() {
-      return run('git push ' + options.pushTo);
+      return run('git pull --rebase ' + options.pushTo +
+        ' "$(git rev-parse --symbolic-full-name HEAD)";git push ' + options.pushTo);
     }
 
     function pushTags() {
